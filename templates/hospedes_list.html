@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block head_title %}
+    {{block.super}} | Quartos
+{% endblock head_title %}
+
+
+{% block content %}
+<h1>Lista de Hóspedes</h1>
+<div class="row">
+    <div class="col-12">
+        <a class="btn btn-success btn-sm" href="{% url 'hospedes:create' %}" role="button">Novo Hóspede</a>
+        <a class="btn btn-primary btn-sm" href="{% url 'hospedes:list_all' %}" role="button">Mostrar Todos</a>
+        <a class="btn btn-primary btn-sm" href="{% url 'hospedes:list' %}" role="button">Somente Ativos</a>
+        <a class="btn btn-danger btn-sm" href="{% url 'hospedes:list_des' %}" role="button">Inativos</a>
+        <br>
+        <br>
+        <table class="table table-sm table-hover table-bordered text-center">
+          <thead>
+            <tr class="table-success">
+                <th scope="col">Nome</th>
+                <th scope="col">Email</th>
+                <th scope="col">User</th>
+                <th scope="col">Cadastrado</th>
+                <th scope="col">Ações</th>
+            </tr>
+          </thead>
+            <tbody>
+        {% for hospede in hospede_list %}
+                <tr>
+                    <th scope="row">{{hospede}}</th>
+                    <td>{{hospede.email}}</td>
+                    <td>{{hospede.user}}</td>
+                    <td>{{hospede.created | date:"d M, Y"}}</td>
+                    <td>
+                        <a class="btn btn-success btn-sm" href="{% url 'hospedes:detail' pk=hospede.id %}" role="button">Ver</a>
+                        <a class="btn btn-warning btn-sm" href="{% url 'hospedes:update' pk=hospede.id %}" role="button">Editar</a>
+                        {% if not hospede.has_hospeddagem %}
+                            {% with object=hospede.id %}
+                                <button type="button" onclick="deleteModal({{hospede.id}})" class="btn btn-danger btn-sm">Remover</button>
+                            {% endwith %}
+                        {% endif %}
+                        <input type="hidden" id="delete-{{hospede.id}}" value="{% url 'hospedes:delete' pk=hospede.id %}">
+                    </td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Modal content-->
+<div class="modal fade" id="deleteModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Remover</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja excluir?</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-danger" id="btn-confirm-delete" href="#" role="button">Sim, Remover</a>
+                <button type="button"  class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block javascript %}
+    <script type="text/javascript">
+    function deleteModal(id){
+        var deleteUrl = "http://127.0.0.1:8000/hospedes/remover/"+id
+        console.log(deleteUrl);
+        $("#btn-confirm-delete")[0].href = deleteUrl;
+        console.log($("#btn-confirm-delete"))
+        $("#deleteModal").modal();
+    };
+    </script>
+
+{% endblock javascript %}

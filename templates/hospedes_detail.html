@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block head_title %}
+    {{block.super}} | Quartos
+{% endblock head_title %}
+
+
+{% block content %}
+<h1>Novo Hóspede</h1>
+<div class="row">
+    <div class="col-4">
+        {{object.nome}}
+    </div>
+</div>
+
+{% endblock content %}

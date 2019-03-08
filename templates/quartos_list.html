@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block head_title %}
+    {{block.super}} | Quartos
+{% endblock head_title %}
+
+
+{% block content %}
+<h1>Lista de Quartos</h1>
+<div class="row">
+    <div class="col-8">
+        <a class="btn btn-primary btn-sm" href="{% url 'quartos:create' %}" role="button">Novo Quarto</a>
+        <br>
+        <br>
+        <table class="table table-sm table-hover table-bordered text-center">
+          <thead>
+            <tr class="table-success">
+              <th scope="col">Quarto</th>
+              <th scope="col">Banheiro</th>
+              <th scope="col">Observação</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+            <tbody>
+        {% for quarto in queryset %}
+                <tr>
+                    <th scope="row">{{quarto}}</th>
+                    <td>{{quarto.get_banheiro}}</td>
+                    <td>{{quarto.get_descricao}}</td>
+                    <td><a class="btn btn-warning btn-sm" href="{% url 'quartos:update' numero=quarto.numero %}" role="button">Editar</a> {% if not quarto.has_hospede %}<a class="btn btn-danger btn-sm" href="{% url 'quartos:delete' numero=quarto.numero %}" role="button">Remover</a>{% endif %}</td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}

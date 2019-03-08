@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block head_title %}
+    {{block.super}} | Quartos
+{% endblock head_title %}
+
+
+{% block content %}
+<h1>Novo quarto</h1>
+<div class="row">
+    <div class="col-4">
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form|crispy}}
+            <input class="btn btn-primary" type="submit" value="Salvar">
+            <a class="btn btn-success" href="{% url 'quartos:create' %}" role="button">Salvar e Novo</a>
+            <a class="btn btn-danger" href="{% url 'quartos:list' %}" role="button">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
